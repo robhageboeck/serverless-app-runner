@@ -1,0 +1,21 @@
+Resources:
+  ServerlessAppRunnerLogsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: serverless-app-runner-logs-${sls:stage}
+  ServerlessAppRunnerLogsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ServerlessAppRunnerLogsBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !Sub "arn:aws:s3:::serverless-app-runner-logs-${sls:stage}"
+              - !Sub "arn:aws:s3:::serverless-app-runner-logs-${sls:stage}/*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"

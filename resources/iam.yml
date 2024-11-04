@@ -1,0 +1,49 @@
+Resources:
+  ServerlessAppRunnerAccessRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ServerlessAppRunnerAccessRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: build.apprunner.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: AppRunnerAccessPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecr:GetDownloadUrlForLayer
+                  - ecr:BatchGetImage
+                  - ecr:DescribeImages
+                  - ecr:GetAuthorizationToken
+                  - ecr:BatchCheckLayerAvailability
+                Resource: "*"
+  ServerlessAppRunnerInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ServerlessAppRunnerInstanceRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: tasks.apprunner.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: AppRunnerInstanceRolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:PutObjectAcl
+                  - s3:ListBucket
+                Resource:
+                  - arn:aws:s3:::serverless-app-runner-logs-${sls:stage}
+                  - arn:aws:s3:::serverless-app-runner-logs-${sls:stage}/*

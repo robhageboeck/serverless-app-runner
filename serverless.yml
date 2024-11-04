@@ -1,0 +1,19 @@
+service: serverless-app-runner
+
+provider:
+  name: aws
+
+plugins:
+  - serverless-plugin-scripts
+
+custom:
+  scripts:
+    hooks:
+      'before:deploy:deploy': ./scripts/deploy-image.sh ${sls:stage} ${env:AWS_PROFILE}
+      'deploy:finalize': ./scripts/cleanup-images.sh ${sls:stage} ${env:AWS_PROFILE}
+      'remove:remove': ./scripts/delete-repo.sh ${sls:stage} ${env:AWS_PROFILE}
+
+resources:
+  - ${file(resources/s3.yml)}
+  - ${file(resources/iam.yml)}
+  - ${file(resources/app-runner.yml)}

@@ -1,0 +1,14 @@
+{
+  "name": "serverless-app-runner",
+  "version": "1.0.0",
+  "description": "Example for deploying python gradio server to AWS App Runner with Serverless",
+  "scripts": {
+    "test": ""
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "serverless": "^4.4.7",
+    "serverless-plugin-scripts": "^1.0.2"
+  }
+}
